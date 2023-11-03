@@ -44,33 +44,33 @@ const stringFunctions = {
   }
 };
 
-let result = stringFunctions.isPolyndrom(1331);
-window.console.log(result);
-result = stringFunctions.isPolyndrom('Кекс');
-window.console.log(result);
-result = stringFunctions.isPolyndrom('Лёша на полке клопа нашёл ');
-window.console.log(result);
+let funcResult = stringFunctions.isPolyndrom(1331);
+window.console.log(funcResult);
+funcResult = stringFunctions.isPolyndrom('Кекс');
+window.console.log(funcResult);
+funcResult = stringFunctions.isPolyndrom('Лёша на полке клопа нашёл ');
+window.console.log(funcResult);
 
 
-result = stringFunctions.getAllNumbers('Лёша на 2полке клопа нашёл 1');
-window.console.log(result);
-result = stringFunctions.getAllNumbers('Лёша на полке клопа нашёл ');
-window.console.log(result);
-result = stringFunctions.getAllNumbers(-25.33727);
-window.console.log(result);
+funcResult = stringFunctions.getAllNumbers('Лёша на 2полке клопа нашёл 1');
+window.console.log(funcResult);
+funcResult = stringFunctions.getAllNumbers('Лёша на полке клопа нашёл ');
+window.console.log(funcResult);
+funcResult = stringFunctions.getAllNumbers(-25.33727);
+window.console.log(funcResult);
 
 
-result = stringFunctions.pushString('1', 4, '0');
-window.console.log(result);
-result = stringFunctions.pushString('q', 4, 'werty');
-window.console.log(result);
-result = stringFunctions.pushString('qwerty', 4, '0');
-window.console.log(result);
+funcResult = stringFunctions.pushString('1', 4, '0');
+window.console.log(funcResult);
+funcResult = stringFunctions.pushString('q', 4, 'werty');
+window.console.log(funcResult);
+funcResult = stringFunctions.pushString('qwerty', 4, '0');
+window.console.log(funcResult);
 
 
-result = stringFunctions.isLessOrEqual('проверяемая строка', 20);
-window.console.log(result);
-result = stringFunctions.isLessOrEqual('проверяемая строка', 18);
-window.console.log(result);
-result = stringFunctions.isLessOrEqual('проверяемая строка', 10);
-window.console.log(result);
+funcResult = stringFunctions.isLessOrEqual('проверяемая строка', 20);
+window.console.log(funcResult);
+funcResult = stringFunctions.isLessOrEqual('проверяемая строка', 18);
+window.console.log(funcResult);
+funcResult = stringFunctions.isLessOrEqual('проверяемая строка', 10);
+window.console.log(funcResult);
