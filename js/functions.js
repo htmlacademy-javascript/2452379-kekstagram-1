@@ -23,11 +23,17 @@ const stringFunctions = {
     return parseInt(result, 10);
   },
   pushString: (str, maxLength, pushStr) => {
-    let stringToAdd = '';
+    const availableLength = maxLength - str.length;
 
-    for (let i = 0; i < maxLength - str.length; i++) {
-      stringToAdd += pushStr[i % pushStr.length];
+    if (availableLength <= 0) {
+      return str;
     }
+
+    const stringToAdd = pushStr.repeat(Math.floor(availableLength / pushStr.length)) + pushStr.substring(0, availableLength % pushStr.length);
+
+    //for (let i = 0; i < availableLength; i++) {
+    //  stringToAdd += pushStr[i % pushStr.length];
+    //}
 
     return stringToAdd + str;
   },
