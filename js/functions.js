@@ -31,6 +31,8 @@ const stringFunctions = {
 
     const stringToAdd = pushStr.repeat(Math.floor(availableLength / pushStr.length)) + pushStr.substring(0, availableLength % pushStr.length);
 
+    //let stringToAdd = '';
+    //
     //for (let i = 0; i < availableLength; i++) {
     //  stringToAdd += pushStr[i % pushStr.length];
     //}
