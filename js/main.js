@@ -4,6 +4,8 @@ const START_COMMENT_ID = 1;
 const MAX_COMMENT_ID = 25;
 const MIN_AVATAR_ID = 1;
 const MAX_AVATAR_ID = 6;
+const MIN_LIKES_COUNT = 15;
+const MAX_LIKES_COUNT = 200;
 
 const messageTemplates = [
   'Всё отлично!',
@@ -34,7 +36,7 @@ function generatePhotoDescription(startID, maxID) {
       id: availableID,
       url: `photos/${availableID}.jpg`,
       description: 'Тестовое описание',
-      likes: generateRandomInteger(15, 200),
+      likes: generateRandomInteger(MIN_LIKES_COUNT, MAX_LIKES_COUNT),
       comments: []
     };
     availableID++;
