@@ -36,35 +36,3 @@ const pushString = (str, maxLength, pushStr) => {
 };
 
 const isLessOrEqual = (str, maxLength) => str.length <= maxLength;
-
-
-let funcResult = isPolyndrom(1331);
-window.console.log(funcResult);
-funcResult = isPolyndrom('Кекс');
-window.console.log(funcResult);
-funcResult = isPolyndrom('Лёша на полке клопа нашёл ');
-window.console.log(funcResult);
-
-
-funcResult = getAllNumbers('Лёша на 2полке клопа нашёл 1');
-window.console.log(funcResult);
-funcResult = getAllNumbers('Лёша на полке клопа нашёл ');
-window.console.log(funcResult);
-funcResult = getAllNumbers(-25.33727);
-window.console.log(funcResult);
-
-
-funcResult = pushString('1', 4, '0');
-window.console.log(funcResult);
-funcResult = pushString('q', 4, 'werty');
-window.console.log(funcResult);
-funcResult = pushString('qwerty', 4, '0');
-window.console.log(funcResult);
-
-
-funcResult = isLessOrEqual('проверяемая строка', 20);
-window.console.log(funcResult);
-funcResult = isLessOrEqual('проверяемая строка', 18);
-window.console.log(funcResult);
-funcResult = isLessOrEqual('проверяемая строка', 10);
-window.console.log(funcResult);
