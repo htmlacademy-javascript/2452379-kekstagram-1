@@ -1,6 +1,6 @@
-const START_DESCTIPTION_ID = 1;
+const MIN_DESCTIPTION_ID = 1;
 const MAX_DESCRIPTON_ID = 25;
-const START_COMMENT_ID = 1;
+const MIN_COMMENT_ID = 1;
 const MAX_COMMENT_ID = 25;
 const MIN_AVATAR_ID = 1;
 const MAX_AVATAR_ID = 6;
@@ -25,8 +25,8 @@ const nameTemplates = [
 ];
 
 
-function generatePhotoDescription(startID, maxID) {
-  let availableID = startID;
+function generatePhotoDescription(minID, maxID) {
+  let availableID = minID;
   return function() {
     if (availableID > maxID) {
       return null;
@@ -45,9 +45,9 @@ function generatePhotoDescription(startID, maxID) {
   };
 }
 
-function generatePhotoComments(startID, maxID) {
+function generatePhotoComments(minID, maxID) {
   const usedIDs = [];
-  let availableID = startID;
+  let availableID = minID;
 
   return function() {
     if (usedIDs.length >= maxID) {
@@ -55,7 +55,7 @@ function generatePhotoComments(startID, maxID) {
     }
 
     while(usedIDs.includes(availableID)) {
-      availableID = generateRandomInteger(startID, maxID);
+      availableID = generateRandomInteger(minID, maxID);
     }
 
     usedIDs.push(availableID);
@@ -86,8 +86,8 @@ function generateRandomName() {
 }
 
 
-const generateDescription = generatePhotoDescription(START_DESCTIPTION_ID, MAX_DESCRIPTON_ID);
-const generateComment = generatePhotoComments(START_COMMENT_ID, MAX_COMMENT_ID);
+const generateDescription = generatePhotoDescription(MIN_DESCTIPTION_ID, MAX_DESCRIPTON_ID);
+const generateComment = generatePhotoComments(MIN_COMMENT_ID, MAX_COMMENT_ID);
 
 
 const photoDescriptions = Array.from({length: 25}, generateDescription);
