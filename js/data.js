@@ -79,4 +79,9 @@ const generatePhotoComments = function(minID, maxID) {
 const generateDescription = generatePhotoDescription(MIN_DESCTIPTION_ID, MAX_DESCRIPTON_ID);
 const generateComment = generatePhotoComments(MIN_COMMENT_ID, MAX_COMMENT_ID);
 
-export {generateDescription, generateComment};
+const generatedData = Array.from({length: 25}, generateDescription);
+generatedData.forEach((item) => {
+  item.comments = Array.from({length: generateRandomInteger(0, 5)}, generateComment);
+});
+
+export { generatedData };
