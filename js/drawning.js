@@ -1,17 +1,29 @@
-import { generatedData } from './data.js';
+import { generatedPictures, generatePicturesFragement, generateCommentsFragment } from './data.js';
 
-const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
+
 const picturesContainer = document.querySelector('.pictures');
-const fragment = document.createDocumentFragment();
+const picturesFragment = generatePicturesFragement(generatedPictures);
 
-generatedData.forEach((item) => {
-  const newPicture = pictureTemplate.cloneNode(true);
+picturesContainer.append(picturesFragment);
 
-  newPicture.querySelector('.picture__img').src = item.url;
-  newPicture.querySelector('.picture__likes').textContent = item.likes;
-  newPicture.querySelector('.picture__comments').textContent = item.comments.length;
+const bigPicture = document.querySelector('.big-picture');
 
-  fragment.append(newPicture);
-});
+const drawBigPicture = (photo) => {
+  bigPicture.classList.remove('hidden');
+  document.body.classList.add('.modal-open');
 
-picturesContainer.append(fragment);
+  bigPicture.querySelector('.big-picture__img img').src = photo.url;
+  bigPicture.querySelector('.likes-count').textContent = photo.likes;
+  bigPicture.querySelector('.comments-count').textContent = photo.comments.length;
+  bigPicture.querySelector('.social__caption').textContent = photo.description;
+  bigPicture.querySelector('.social__comment-count').classList.add('hidden');
+  bigPicture.querySelector('.comments-loader').classList.add('hidden');
+
+  const commentsContainer = bigPicture.querySelector('.social__comments');
+  const commentsFragment = generateCommentsFragment(photo.comments);
+
+  commentsContainer.innerHTML = '';
+  commentsContainer.append(commentsFragment);
+};
+
+export { picturesContainer, bigPicture, drawBigPicture };

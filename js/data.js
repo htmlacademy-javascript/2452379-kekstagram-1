@@ -26,7 +26,9 @@ const nameTemplates = [
   'Лоег',
 ];
 
-const generatePhotoDescription = function(minID, maxID) {
+const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
+
+const generatePictureDescription = function(minID, maxID) {
   let availableID = minID;
   return function() {
     if (availableID > maxID) {
@@ -51,7 +53,9 @@ const generateRandomAvatar = function(min, max) {
   return `img/avatar-${generateRandomInteger(min, max)}.svg`;
 };
 
-const generatePhotoComments = function(minID, maxID) {
+const commentTemplate = document.querySelector('#social__comment').content.querySelector('.social__comment');
+
+const generatePictureComments = function(minID, maxID) {
   const usedIDs = [];
   let availableID = minID;
 
@@ -76,12 +80,42 @@ const generatePhotoComments = function(minID, maxID) {
 };
 
 
-const generateDescription = generatePhotoDescription(MIN_DESCTIPTION_ID, MAX_DESCRIPTON_ID);
-const generateComment = generatePhotoComments(MIN_COMMENT_ID, MAX_COMMENT_ID);
+const generateDescription = generatePictureDescription(MIN_DESCTIPTION_ID, MAX_DESCRIPTON_ID);
+const generateComment = generatePictureComments(MIN_COMMENT_ID, MAX_COMMENT_ID);
 
-const generatedData = Array.from({length: MAX_DESCRIPTON_ID}, generateDescription);
-generatedData.forEach((item) => {
-  item.comments = Array.from({length: generateRandomInteger(0, 5)}, generateComment);
+const generatedPictures = Array.from({length: MAX_DESCRIPTON_ID}, generateDescription);
+generatedPictures.forEach((picture) => {
+  picture.comments = Array.from({length: generateRandomInteger(0, 5)}, generateComment);
 });
 
-export { generatedData };
+const generatePicturesFragement = (pictures) => {
+  const fragment = document.createDocumentFragment();
+  pictures.forEach((picture) => {
+    const newPicture = pictureTemplate.cloneNode(true);
+
+    newPicture.querySelector('.picture__img').src = picture.url;
+    newPicture.querySelector('.picture__likes').textContent = picture.likes;
+    newPicture.querySelector('.picture__comments').textContent = picture.comments.length;
+
+    fragment.append(newPicture);
+  });
+
+  return fragment;
+};
+
+const generateCommentsFragment = (comments) => {
+  const fragment = document.createDocumentFragment();
+  comments.forEach((comment) => {
+    const newComment = commentTemplate.cloneNode(true);
+
+    newComment.querySelector('.social__picture').src = comment.avatar;
+    newComment.querySelector('.social__picture').alt = comment.name;
+    newComment.querySelector('.social__text').textContent = comment.message;
+
+    fragment.append(newComment);
+  });
+
+  return fragment;
+};
+
+export { generatedPictures, generatePicturesFragement, generateCommentsFragment };
