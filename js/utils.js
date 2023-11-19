@@ -8,4 +8,8 @@ const getRandomArrayElement = function(arr, min = 0, max = arr.length - 1) {
   return arr[generateRandomInteger(min, max)];
 };
 
-export {getRandomArrayElement, generateRandomInteger};
+const isEsc = function (evt) {
+  return evt.key === 'Escape';
+};
+
+export { getRandomArrayElement, generateRandomInteger, isEsc };
