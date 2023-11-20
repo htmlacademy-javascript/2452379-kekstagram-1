@@ -1,4 +1,4 @@
-import { isEsc } from './utils.js';
+import { onEscKeydownDo } from './utils.js';
 
 const COMMENTS_BLOCK_SIZE = 5;
 
@@ -8,12 +8,7 @@ const commentTemplate = document.querySelector('#social__comment').content.query
 const closeButton = document.querySelector('.big-picture__cancel');
 const loadCommentsButton = document.querySelector('.comments-loader');
 
-const onEscKeydown = (evt) => {
-  if (isEsc(evt)) {
-    evt.preventDefault();
-    onCloseBigPictureClick();
-  }
-};
+const onEscKeydown = onEscKeydownDo(onCloseBigPictureClick);
 
 function onCloseBigPictureClick() {
   bigPicture.classList.add('hidden');

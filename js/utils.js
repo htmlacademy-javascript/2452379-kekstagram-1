@@ -12,4 +12,11 @@ const isEsc = function (evt) {
   return evt.key === 'Escape';
 };
 
-export { getRandomArrayElement, generateRandomInteger, isEsc };
+const onEscKeydownDo = (cb) => ((evt) => {
+  if (isEsc(evt)) {
+    evt.preventDefault();
+    cb();
+  }
+});
+
+export { getRandomArrayElement, generateRandomInteger, isEsc, onEscKeydownDo };
