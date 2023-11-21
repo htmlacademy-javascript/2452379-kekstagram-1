@@ -21,6 +21,7 @@ const pristineConfig = {
   errorTextTag: 'div'
 };
 const pristine = new Pristine(uploadPictureForm, pristineConfig);
+pristine.validate();
 
 
 const onEscKeydown = onEscKeydownDo(onCloseUploadPictureFormClick);
