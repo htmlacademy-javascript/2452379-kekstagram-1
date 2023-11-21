@@ -13,7 +13,6 @@ const pictureHashtags = pictureFieldsContainer.querySelector('.text__hashtags');
 const pictureDescription = pictureFieldsContainer.querySelector('.text__description');
 const closeButton = uploadPictureForm.querySelector('#upload-cancel');
 
-const hashtagRegex = /^#[a-zа-яё0-9]{1,19}$/i;
 const hashtagRegExp = new RegExp(`^#[a-zа-яё0-9]{${MIN_HASHTAG_LENGTH},${MAX_HASHTAG_LENGTH}}$`, 'i');
 
 const pristineConfig = {
