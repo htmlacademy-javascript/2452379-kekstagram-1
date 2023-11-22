@@ -8,12 +8,10 @@ const getRandomArrayElement = function(arr, min = 0, max = arr.length - 1) {
   return arr[generateRandomInteger(min, max)];
 };
 
-const isEsc = function (evt) {
-  return evt.key === 'Escape';
-};
+const isEsc = (evt) => evt.key === 'Escape';
 
-const onEscKeydownDo = (cb) => ((evt) => {
-  if (isEsc(evt)) {
+const onEscKeydownDo = (cb, exp = null) => ((evt) => {
+  if (isEsc(evt) && exp ? exp(evt) : true) {
     evt.preventDefault();
     cb();
   }

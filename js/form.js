@@ -7,10 +7,8 @@ const MAX_HASHTAG_LENGTH = 19;
 
 const uploadPictureForm = document.querySelector('#upload-select-image');
 const pictureInput = uploadPictureForm.querySelector('#upload-file');
-const picturePreview = uploadPictureForm.querySelector('.img-upload__preview img');
-const pictureFieldsContainer = uploadPictureForm.querySelector('.img-upload__text');
-const pictureHashtags = pictureFieldsContainer.querySelector('.text__hashtags');
-const pictureDescription = pictureFieldsContainer.querySelector('.text__description');
+const pictureHashtags = uploadPictureForm.querySelector('.text__hashtags');
+const pictureDescription = uploadPictureForm.querySelector('.text__description');
 const closeButton = uploadPictureForm.querySelector('#upload-cancel');
 
 const hashtagRegExp = new RegExp(`^#[a-zа-яё0-9]{${MIN_HASHTAG_LENGTH},${MAX_HASHTAG_LENGTH}}$`, 'i');
@@ -24,11 +22,11 @@ const pristine = new Pristine(uploadPictureForm, pristineConfig);
 pristine.validate();
 
 
-const onEscKeydown = onEscKeydownDo(onCloseUploadPictureFormClick);
+const onEscKeydown = onEscKeydownDo(onCloseUploadPictureFormClick, (evt) => evt.target.tagName !== 'INPUT' && evt.target.tagName !== 'TEXTAREA');
 function onPictureInput() {
   uploadPictureForm.querySelector('.img-upload__overlay').classList.remove('hidden');
   document.body.classList.add('modal-open');
-  picturePreview.src = pictureInput.value;
+  uploadPictureForm.querySelector('.img-upload__preview img').src = pictureInput.value;
 
   document.addEventListener('keydown', onEscKeydown);
 }
@@ -40,12 +38,6 @@ function onCloseUploadPictureFormClick() {
   pictureDescription.value = '';
 
   document.removeEventListener('keydown', onEscKeydown);
-}
-function onFieldFocusin() {
-  document.removeEventListener('keydown', onEscKeydown);
-}
-function onFieldFocusout() {
-  document.addEventListener('keydown', onEscKeydown);
 }
 
 const validateHashtags = (value) => {
@@ -92,9 +84,6 @@ pristine.addValidator(pictureDescription, validateDescription, getDescriptionErr
 
 pictureInput.addEventListener('input', onPictureInput);
 closeButton.addEventListener('click', onCloseUploadPictureFormClick);
-
-pictureFieldsContainer.addEventListener('focusin', onFieldFocusin);
-pictureFieldsContainer.addEventListener('focusout', onFieldFocusout);
 
 uploadPictureForm.addEventListener('submit', (evt) => {
   evt.preventDefault();
