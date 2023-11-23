@@ -51,9 +51,6 @@ const scaleIncBtn = document.querySelector('.scale__control--bigger');
 const effectSlider = document.querySelector('.effect-level__slider');
 const effectsList = document.querySelector('.effects__list');
 
-noUiSlider.create(effectSlider, { start: 0, range: { min: 0, max: 1 }, connect: 'lower' });
-effectSlider.parentElement.classList.add('hidden');
-
 const getScaleValue = () => +scale.value.replace('%', '');
 const setScaleValue = (value) => {
   scale.value = `${value}%`;
@@ -109,18 +106,22 @@ function onEffectChange(evt) {
 }
 
 const initPictureEditor = () => {
+  noUiSlider.create(effectSlider, { start: 0, range: { min: 0, max: 1 }, connect: 'lower' });
+  effectSlider.parentElement.classList.add('hidden');
   setScaleValue(100);
+
   scaleDecBtn.addEventListener('click', onScaleDecClick);
   scaleIncBtn.addEventListener('click', onScaleIncClick);
   effectsList.addEventListener('change', onEffectChange);
+  effectSlider.noUiSlider.on('update', onSliderUpdate);
 };
 const destroyPictureEditor = () => {
   scaleDecBtn.removeEventListener('click', onScaleDecClick);
   scaleIncBtn.removeEventListener('click', onScaleIncClick);
   effectsList.removeEventListener('change', onEffectChange);
+
+  effectSlider.noUiSlider.destroy();
 };
 
-
-effectSlider.noUiSlider.on('update', onSliderUpdate);
 
 export { initPictureEditor, destroyPictureEditor };
