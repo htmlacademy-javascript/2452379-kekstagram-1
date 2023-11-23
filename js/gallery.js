@@ -1,4 +1,6 @@
-import { isEsc } from './utils.js';
+import { onEscKeydownDo } from './utils.js';
+
+const COMMENTS_BLOCK_SIZE = 5;
 
 const bigPicture = document.querySelector('.big-picture');
 const commentsContainer = bigPicture.querySelector('.social__comments');
@@ -6,12 +8,7 @@ const commentTemplate = document.querySelector('#social__comment').content.query
 const closeButton = document.querySelector('.big-picture__cancel');
 const loadCommentsButton = document.querySelector('.comments-loader');
 
-const onEscKeydown = (evt) => {
-  if (isEsc(evt)) {
-    evt.preventDefault();
-    onCloseBigPictureClick();
-  }
-};
+const onEscKeydown = onEscKeydownDo(onCloseBigPictureClick);
 
 function onCloseBigPictureClick() {
   bigPicture.classList.add('hidden');
@@ -33,7 +30,7 @@ const updateCommentsCount = () => {
 
 function onLoadCommentsClick() {
   const hiddenComments = commentsContainer.querySelectorAll('.social__comment.hidden');
-  const count = hiddenComments.length > 5 ? 5 : hiddenComments.length;
+  const count = hiddenComments.length > COMMENTS_BLOCK_SIZE ? COMMENTS_BLOCK_SIZE : hiddenComments.length;
 
   for (let i = 0; i < count; i++) {
     hiddenComments[i].classList.remove('hidden');
@@ -47,7 +44,7 @@ const generateCommentsFragment = (comments) => {
   comments.forEach((comment, index) => {
     const newComment = commentTemplate.cloneNode(true);
 
-    if (index + 1 > 5) {
+    if (index + 1 > COMMENTS_BLOCK_SIZE) {
       newComment.classList.add('hidden');
     }
 
