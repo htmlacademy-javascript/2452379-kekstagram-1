@@ -5,47 +5,42 @@ const SLIDER_OPTIONS = {
   'chrome': {
     start: 1,
     range: {
-      'min': [0],
-      'max': [1]
+      'min': 0,
+      'max': 1
     },
-    step: 0.1,
-    connect: 'lower'
+    step: 0.1
   },
   'sepia': {
     start: 1,
     range: {
-      'min': [0],
-      'max': [1]
+      'min': 0,
+      'max': 1
     },
-    step: 0.1,
-    connect: 'lower'
+    step: 0.1
   },
   'marvin': {
     start: 100,
     range: {
-      'min': [0],
-      'max': [100]
+      'min': 0,
+      'max': 100
     },
-    step: 1,
-    connect: 'lower'
+    step: 1
   },
   'phobos': {
     start: 3,
     range: {
-      'min': [0],
-      'max': [3]
+      'min': 0,
+      'max': 3
     },
-    step: 0.1,
-    connect: 'lower'
+    step: 0.1
   },
   'heat': {
     start: 3,
     range: {
-      'min': [1],
-      'max': [3]
+      'min': 1,
+      'max': 3
     },
-    step: 0.1,
-    connect: 'lower'
+    step: 0.1
   },
 };
 
@@ -56,7 +51,7 @@ const scaleIncBtn = document.querySelector('.scale__control--bigger');
 const effectSlider = document.querySelector('.effect-level__slider');
 const effectsList = document.querySelector('.effects__list');
 
-noUiSlider.create(effectSlider, SLIDER_OPTIONS[0]);
+noUiSlider.create(effectSlider, { start: 0, range: { min: 0, max: 1 }, connect: 'lower' });
 effectSlider.parentElement.classList.add('hidden');
 
 const getScaleValue = () => +scale.value.replace('%', '');
@@ -98,9 +93,6 @@ function onSliderUpdate() {
     case 'heat':
       picturePreview.style.filter = `brightness(${effectSlider.noUiSlider.get()})`;
       break;
-    case 'none':
-      picturePreview.style.filter = '';
-      break;
   }
 
   document.querySelector('.effect-level__value').value = effectSlider.noUiSlider.get();
@@ -108,6 +100,7 @@ function onSliderUpdate() {
 function onEffectChange(evt) {
   picturePreview.classList = `effects__preview--${evt.target.value}`;
   if (evt.target.value === 'none') {
+    picturePreview.style.filter = '';
     effectSlider.parentElement.classList.add('hidden');
   } else {
     effectSlider.parentElement.classList.remove('hidden');
