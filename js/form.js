@@ -1,3 +1,4 @@
+import { initPictureEditor, destroyPictureEditor } from './pictureeditor.js';
 import { onEscKeydownDo } from './utils.js';
 
 const MAX_DESCRIPTION_SIZE = 140;
@@ -29,6 +30,8 @@ function onPictureInput() {
   uploadPictureForm.querySelector('.img-upload__preview img').src = pictureInput.value;
 
   document.addEventListener('keydown', onEscKeydown);
+
+  initPictureEditor();
 }
 function onCloseUploadPictureFormClick() {
   uploadPictureForm.querySelector('.img-upload__overlay').classList.add('hidden');
@@ -38,6 +41,8 @@ function onCloseUploadPictureFormClick() {
   pictureDescription.value = '';
 
   document.removeEventListener('keydown', onEscKeydown);
+
+  destroyPictureEditor();
 }
 
 const validateHashtags = (value) => {
