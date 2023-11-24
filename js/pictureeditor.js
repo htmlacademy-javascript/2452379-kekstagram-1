@@ -44,33 +44,34 @@ const SLIDER_OPTIONS = {
   },
 };
 
-const picturePreview = document.querySelector('.img-upload__preview img');
-const scale = document.querySelector('.scale__control--value');
-const scaleDecBtn = document.querySelector('.scale__control--smaller');
-const scaleIncBtn = document.querySelector('.scale__control--bigger');
-const effectSlider = document.querySelector('.effect-level__slider');
-const effectsList = document.querySelector('.effects__list');
+const pictureForm = document.querySelector('#upload-select-image');
+const picturePreview = pictureForm.querySelector('.img-upload__preview img');
+const scale = pictureForm.querySelector('.scale__control--value');
+const scaleDecBtn = pictureForm.querySelector('.scale__control--smaller');
+const scaleIncBtn = pictureForm.querySelector('.scale__control--bigger');
+const effectSlider = pictureForm.querySelector('.effect-level__slider');
+const effectsList = pictureForm.querySelector('.effects__list');
 
 const getScaleValue = () => +scale.value.replace('%', '');
 const setScaleValue = (value) => {
   scale.value = `${value}%`;
 };
-function updatePreview() {
-  picturePreview.style.transform = `scale(${getScaleValue() / 100})`;
-}
 
-function onScaleDecClick() {
-  const afterScale = getScaleValue() - SCALE_STEP;
-  if (afterScale >= SCALE_MIN) {
+const changePreviewEffect = (() => {
+  let currentEffect = 'effects__preview--none';
+  return (newEffect) => {
+    picturePreview.classList.remove(currentEffect);
+    picturePreview.classList.add(newEffect);
+    currentEffect = newEffect;
+  };
+})();
+
+function onScaleClick(evt) {
+  const flag = evt.target.classList.contains('scale__control--bigger');
+  const afterScale = flag ? getScaleValue() + SCALE_STEP : getScaleValue() - SCALE_STEP;
+  if (afterScale >= SCALE_MIN && afterScale <= SCALE_MAX) {
     setScaleValue(afterScale);
-    updatePreview();
-  }
-}
-function onScaleIncClick() {
-  const afterScale = getScaleValue() + SCALE_STEP;
-  if (afterScale <= SCALE_MAX) {
-    setScaleValue(afterScale);
-    updatePreview();
+    picturePreview.style.transform = `scale(${getScaleValue() / 100})`;
   }
 }
 function onSliderUpdate() {
@@ -95,7 +96,7 @@ function onSliderUpdate() {
   document.querySelector('.effect-level__value').value = effectSlider.noUiSlider.get();
 }
 function onEffectChange(evt) {
-  picturePreview.classList = `effects__preview--${evt.target.value}`;
+  changePreviewEffect(`effects__preview--${evt.target.value}`);
   if (evt.target.value === 'none') {
     picturePreview.style.filter = '';
     effectSlider.parentElement.classList.add('hidden');
@@ -110,14 +111,14 @@ const initPictureEditor = () => {
   effectSlider.parentElement.classList.add('hidden');
   setScaleValue(100);
 
-  scaleDecBtn.addEventListener('click', onScaleDecClick);
-  scaleIncBtn.addEventListener('click', onScaleIncClick);
+  scaleDecBtn.addEventListener('click', onScaleClick);
+  scaleIncBtn.addEventListener('click', onScaleClick);
   effectsList.addEventListener('change', onEffectChange);
   effectSlider.noUiSlider.on('update', onSliderUpdate);
 };
 const destroyPictureEditor = () => {
-  scaleDecBtn.removeEventListener('click', onScaleDecClick);
-  scaleIncBtn.removeEventListener('click', onScaleIncClick);
+  scaleDecBtn.removeEventListener('click', onScaleClick);
+  scaleIncBtn.removeEventListener('click', onScaleClick);
   effectsList.removeEventListener('change', onEffectChange);
 
   effectSlider.noUiSlider.destroy();
