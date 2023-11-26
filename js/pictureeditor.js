@@ -52,7 +52,7 @@ const scaleIncBtn = pictureForm.querySelector('.scale__control--bigger');
 const effectSlider = pictureForm.querySelector('.effect-level__slider');
 const effectsList = pictureForm.querySelector('.effects__list');
 
-const getScaleValue = () => +scale.value.replace('%', '');
+const getScaleValue = () => parseInt(scale.value, 10);
 const setScaleValue = (value) => {
   scale.value = `${value}%`;
 };
