@@ -55,6 +55,7 @@ const effectsList = pictureForm.querySelector('.effects__list');
 const getScaleValue = () => parseInt(scale.value, 10);
 const setScaleValue = (value) => {
   scale.value = `${value}%`;
+  picturePreview.style.transform = `scale(${getScaleValue() / 100})`;
 };
 
 const changePreviewEffect = (() => {
@@ -71,7 +72,6 @@ function onScaleClick(evt) {
   const afterScale = flag ? getScaleValue() + SCALE_STEP : getScaleValue() - SCALE_STEP;
   if (afterScale >= SCALE_MIN && afterScale <= SCALE_MAX) {
     setScaleValue(afterScale);
-    picturePreview.style.transform = `scale(${getScaleValue() / 100})`;
   }
 }
 function onSliderUpdate() {
@@ -117,6 +117,8 @@ const initPictureEditor = () => {
   effectSlider.noUiSlider.on('update', onSliderUpdate);
 };
 const destroyPictureEditor = () => {
+  setScaleValue(100);
+  changePreviewEffect('effects__preview--none');
   scaleDecBtn.removeEventListener('click', onScaleClick);
   scaleIncBtn.removeEventListener('click', onScaleClick);
   effectsList.removeEventListener('change', onEffectChange);

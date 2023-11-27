@@ -1,5 +1,7 @@
 import { initPictureEditor, destroyPictureEditor } from './pictureeditor.js';
+import { showMessage } from './messages.js';
 import { onEscKeydownDo } from './utils.js';
+import { sendData } from './api.js';
 
 const MAX_DESCRIPTION_SIZE = 140;
 const MAX_HASHTAGS_COUNT = 5;
@@ -23,7 +25,7 @@ const pristine = new Pristine(uploadPictureForm, pristineConfig);
 pristine.validate();
 
 
-const onEscKeydown = onEscKeydownDo(onCloseUploadPictureFormClick, (evt) => evt.target.tagName !== 'INPUT' && evt.target.tagName !== 'TEXTAREA');
+const onEscKeydown = onEscKeydownDo(closeUploadForm, (evt) => evt.target.tagName !== 'INPUT' && evt.target.tagName !== 'TEXTAREA');
 function onPictureInput() {
   uploadPictureForm.querySelector('.img-upload__overlay').classList.remove('hidden');
   document.body.classList.add('modal-open');
@@ -33,7 +35,7 @@ function onPictureInput() {
 
   initPictureEditor();
 }
-function onCloseUploadPictureFormClick() {
+function closeUploadForm() {
   uploadPictureForm.querySelector('.img-upload__overlay').classList.add('hidden');
   document.body.classList.remove('modal-open');
   pictureInput.value = '';
@@ -88,11 +90,20 @@ pristine.addValidator(pictureHashtags, validateHashtags, getHashtagsErrorText);
 pristine.addValidator(pictureDescription, validateDescription, getDescriptionErrorText);
 
 pictureInput.addEventListener('input', onPictureInput);
-closeButton.addEventListener('click', onCloseUploadPictureFormClick);
+closeButton.addEventListener('click', closeUploadForm);
 
 uploadPictureForm.addEventListener('submit', (evt) => {
   evt.preventDefault();
 
-  pristine.validate();
+  const isValid = pristine.validate();
+
+  if (isValid) {
+    const formData = new FormData(evt.target);
+    sendData(formData)
+      .then(closeUploadForm)
+      .then(() => showMessage('Изображение успешно загружено', 'SUCCESS'))
+      .catch((err) => showMessage(err.message, 'ERROR'));
+  }
+
 });
 
