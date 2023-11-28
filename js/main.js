@@ -1,5 +1,9 @@
-import { pictures } from './data.js';
 import { renderPictures } from './pictures.js';
+import { getData } from './api.js';
+import { showMessage } from './messages.js';
+
 import './form.js';
 
-renderPictures(pictures);
+getData()
+  .then((pictures) => renderPictures(pictures))
+  .catch((err) => showMessage(err.message, 'ERROR'));
