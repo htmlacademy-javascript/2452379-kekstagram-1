@@ -1,4 +1,4 @@
-import { initPictureEditor, destroyPictureEditor } from './pictureeditor.js';
+import { initPictureEditor, destroyPictureEditor } from './picture-editor.js';
 import { showMessage } from './messages.js';
 import { onEscKeydownDo } from './utils.js';
 import { sendData } from './api.js';
