@@ -19,6 +19,12 @@ const renderPicture = (picture) => {
   return newPicture;
 };
 
+const clearPictures = () => {
+  picturesContainer
+    .querySelectorAll('.picture')
+    .forEach((picture) => picture.remove());
+};
+
 const renderPictures = (pictures) => {
   const fragment = document.createDocumentFragment();
 
@@ -26,6 +32,7 @@ const renderPictures = (pictures) => {
     fragment.append(renderPicture(picture));
   });
 
+  clearPictures();
   picturesContainer.append(fragment);
 };
 
