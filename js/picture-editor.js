@@ -51,7 +51,6 @@ const scaleDecBtn = pictureForm.querySelector('.scale__control--smaller');
 const scaleIncBtn = pictureForm.querySelector('.scale__control--bigger');
 const effectSlider = pictureForm.querySelector('.effect-level__slider');
 const effectsList = pictureForm.querySelector('.effects__list');
-const effectLevel = pictureForm.querySelector('.effect-level__value');
 
 const getScaleValue = () => parseInt(scale.value, 10);
 const setScaleValue = (value) => {
@@ -94,7 +93,7 @@ function onSliderUpdate() {
       break;
   }
 
-  effectLevel.value = effectSlider.noUiSlider.get();
+  pictureForm.querySelector('.effect-level__value').value = effectSlider.noUiSlider.get();
 }
 function onEffectChange(evt) {
   changePreviewEffect(`effects__preview--${evt.target.value}`);
@@ -110,7 +109,6 @@ function onEffectChange(evt) {
 const initPictureEditor = () => {
   noUiSlider.create(effectSlider, { start: 0, range: { min: 0, max: 1 }, connect: 'lower' });
   effectSlider.parentElement.classList.add('hidden');
-  effectLevel.value = 0;
   setScaleValue(100);
 
   scaleDecBtn.addEventListener('click', onScaleClick);
@@ -120,6 +118,7 @@ const initPictureEditor = () => {
 };
 const destroyPictureEditor = () => {
   setScaleValue(100);
+  picturePreview.style.filter = '';
   changePreviewEffect('effects__preview--none');
   scaleDecBtn.removeEventListener('click', onScaleClick);
   scaleIncBtn.removeEventListener('click', onScaleClick);
