@@ -32,14 +32,15 @@ function onPictureInput() {
     showMessage('Неверный тип файла', 'ERROR');
     return;
   }
+  const fileURL = URL.createObjectURL(file);
 
   uploadPictureForm.querySelector('.img-upload__overlay').classList.remove('hidden');
   document.body.classList.add('modal-open');
-  uploadPictureForm.querySelector('.img-upload__preview img').src = URL.createObjectURL(file);
+  uploadPictureForm.querySelector('.img-upload__preview img').src = fileURL;
 
   document.addEventListener('keydown', onEscKeydown);
 
-  initPictureEditor();
+  initPictureEditor(fileURL);
 }
 function closeUploadForm() {
   uploadPictureForm.querySelector('.img-upload__overlay').classList.add('hidden');

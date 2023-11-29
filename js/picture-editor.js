@@ -106,10 +106,14 @@ function onEffectChange(evt) {
   }
 }
 
-const initPictureEditor = () => {
+const initPictureEditor = (fileURL) => {
   noUiSlider.create(effectSlider, { start: 0, range: { min: 0, max: 1 }, connect: 'lower' });
   effectSlider.parentElement.classList.add('hidden');
   setScaleValue(100);
+
+  effectsList.querySelectorAll('.effects__preview').forEach((preview) => {
+    preview.style.backgroundImage = `url("${fileURL}")`;
+  });
 
   scaleDecBtn.addEventListener('click', onScaleClick);
   scaleIncBtn.addEventListener('click', onScaleClick);
