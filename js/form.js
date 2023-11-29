@@ -110,6 +110,4 @@ uploadPictureForm.addEventListener('submit', (evt) => {
       .then(() => showMessage('Изображение успешно загружено', 'SUCCESS'))
       .catch((err) => showMessage(err.message, 'ERROR'));
   }
-
 });
-
