@@ -93,7 +93,7 @@ function onSliderUpdate() {
       break;
   }
 
-  document.querySelector('.effect-level__value').value = effectSlider.noUiSlider.get();
+  pictureForm.querySelector('.effect-level__value').value = effectSlider.noUiSlider.get();
 }
 function onEffectChange(evt) {
   changePreviewEffect(`effects__preview--${evt.target.value}`);
@@ -106,10 +106,14 @@ function onEffectChange(evt) {
   }
 }
 
-const initPictureEditor = () => {
+const initPictureEditor = (fileURL) => {
   noUiSlider.create(effectSlider, { start: 0, range: { min: 0, max: 1 }, connect: 'lower' });
   effectSlider.parentElement.classList.add('hidden');
   setScaleValue(100);
+
+  effectsList.querySelectorAll('.effects__preview').forEach((preview) => {
+    preview.style.backgroundImage = `url("${fileURL}")`;
+  });
 
   scaleDecBtn.addEventListener('click', onScaleClick);
   scaleIncBtn.addEventListener('click', onScaleClick);
@@ -118,6 +122,7 @@ const initPictureEditor = () => {
 };
 const destroyPictureEditor = () => {
   setScaleValue(100);
+  picturePreview.style.filter = '';
   changePreviewEffect('effects__preview--none');
   scaleDecBtn.removeEventListener('click', onScaleClick);
   scaleIncBtn.removeEventListener('click', onScaleClick);

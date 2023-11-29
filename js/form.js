@@ -2,7 +2,7 @@ import { initPictureEditor, destroyPictureEditor } from './picture-editor.js';
 import { showMessage } from './messages.js';
 import { onEscKeydownDo } from './utils.js';
 import { sendData } from './api.js';
-
+const FILE_TYPES = [ 'jpg', 'jpeg', 'png' ];
 const MAX_DESCRIPTION_SIZE = 140;
 const MAX_HASHTAGS_COUNT = 5;
 const MIN_HASHTAG_LENGTH = 1;
@@ -27,13 +27,20 @@ pristine.validate();
 
 const onEscKeydown = onEscKeydownDo(closeUploadForm, (evt) => evt.target.tagName !== 'INPUT' && evt.target.tagName !== 'TEXTAREA');
 function onPictureInput() {
+  const file = pictureInput.files[0], fileName = file.name.toLowerCase();
+  if (!FILE_TYPES.some((ft) => fileName.endsWith(ft))) {
+    showMessage('Неверный тип файла', 'ERROR');
+    return;
+  }
+  const fileURL = URL.createObjectURL(file);
+
   uploadPictureForm.querySelector('.img-upload__overlay').classList.remove('hidden');
   document.body.classList.add('modal-open');
-  uploadPictureForm.querySelector('.img-upload__preview img').src = pictureInput.value;
+  uploadPictureForm.querySelector('.img-upload__preview img').src = fileURL;
 
   document.addEventListener('keydown', onEscKeydown);
 
-  initPictureEditor();
+  initPictureEditor(fileURL);
 }
 function closeUploadForm() {
   uploadPictureForm.querySelector('.img-upload__overlay').classList.add('hidden');
@@ -104,6 +111,4 @@ uploadPictureForm.addEventListener('submit', (evt) => {
       .then(() => showMessage('Изображение успешно загружено', 'SUCCESS'))
       .catch((err) => showMessage(err.message, 'ERROR'));
   }
-
 });
-

@@ -1,23 +1,15 @@
-import { getRandomArrayElement } from './utils.js';
-
 const RANDOM_FILTER_COUNT = 10;
 
 const filters = document.querySelector('.img-filters');
 const FilterMethods = {
   'filter-default': (pictures) => pictures,
   'filter-random': (pictures) => {
-    const selectedIds = [];
-    const result = [];
-    for (let i = 0; i < RANDOM_FILTER_COUNT;) {
-      const randomPicture = getRandomArrayElement(pictures);
-      if (!selectedIds.includes(randomPicture.id)) {
-        selectedIds.push(randomPicture.id);
-        result.push(randomPicture);
-        i++;
-      }
+    for (let i = pictures.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [pictures[i], pictures[j]] = [pictures[j], pictures[i]];
     }
 
-    return result;
+    return pictures.slice(0, RANDOM_FILTER_COUNT);
   },
   'filter-discussed': (pictures) => pictures.sort((picA, picB) => picB.comments.length - picA.comments.length)
 };
