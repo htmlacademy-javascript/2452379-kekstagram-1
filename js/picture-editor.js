@@ -67,14 +67,14 @@ const changePreviewEffect = (() => {
   };
 })();
 
-function onScaleClick(evt) {
-  const flag = evt.target.classList.contains('scale__control--bigger');
-  const afterScale = flag ? getScaleValue() + SCALE_STEP : getScaleValue() - SCALE_STEP;
+const onScaleClick = (dir) => (() => {
+  const afterScale = dir ? getScaleValue() + SCALE_STEP : getScaleValue() - SCALE_STEP;
   if (afterScale >= SCALE_MIN && afterScale <= SCALE_MAX) {
     setScaleValue(afterScale);
   }
-}
-function onSliderUpdate() {
+});
+
+const onSliderUpdate = () => {
   switch (effectsList.querySelector(':checked').value) {
     case 'chrome':
       picturePreview.style.filter = `grayscale(${effectSlider.noUiSlider.get()})`;
@@ -94,8 +94,9 @@ function onSliderUpdate() {
   }
 
   pictureForm.querySelector('.effect-level__value').value = effectSlider.noUiSlider.get();
-}
-function onEffectChange(evt) {
+};
+
+const onEffectChange = (evt) => {
   changePreviewEffect(`effects__preview--${evt.target.value}`);
   if (evt.target.value === 'none') {
     picturePreview.style.filter = '';
@@ -104,32 +105,27 @@ function onEffectChange(evt) {
     effectSlider.parentElement.classList.remove('hidden');
     effectSlider.noUiSlider.updateOptions(SLIDER_OPTIONS[evt.target.value]);
   }
-}
+};
 
 const initPictureEditor = (fileURL) => {
-  noUiSlider.create(effectSlider, { start: 0, range: { min: 0, max: 1 }, connect: 'lower' });
   effectSlider.parentElement.classList.add('hidden');
   setScaleValue(100);
 
   effectsList.querySelectorAll('.effects__preview').forEach((preview) => {
     preview.style.backgroundImage = `url("${fileURL}")`;
   });
-
-  scaleDecBtn.addEventListener('click', onScaleClick);
-  scaleIncBtn.addEventListener('click', onScaleClick);
-  effectsList.addEventListener('change', onEffectChange);
-  effectSlider.noUiSlider.on('update', onSliderUpdate);
 };
 const destroyPictureEditor = () => {
   setScaleValue(100);
   picturePreview.style.filter = '';
   changePreviewEffect('effects__preview--none');
-  scaleDecBtn.removeEventListener('click', onScaleClick);
-  scaleIncBtn.removeEventListener('click', onScaleClick);
-  effectsList.removeEventListener('change', onEffectChange);
-
-  effectSlider.noUiSlider.destroy();
 };
 
+noUiSlider.create(effectSlider, { start: 0, range: { min: 0, max: 1 }, connect: 'lower' });
+effectSlider.noUiSlider.on('update', onSliderUpdate);
+
+scaleDecBtn.addEventListener('click', onScaleClick(false));
+scaleIncBtn.addEventListener('click', onScaleClick(true));
+effectsList.addEventListener('change', onEffectChange);
 
 export { initPictureEditor, destroyPictureEditor };
