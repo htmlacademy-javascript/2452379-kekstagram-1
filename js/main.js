@@ -16,11 +16,9 @@ const onFilterClick = () => {
   }
 };
 
-getData()
-  .then((pictures) => {
-    loadedPictures = pictures;
-    initGalleryFilters(debounce(onFilterClick, RENDER_DELAY));
-    renderPictures(pictures);
-  })
-  .catch((err) => showMessage(err.message, 'ERROR'));
-
+getData((pictures) => {
+  loadedPictures = pictures;
+  initGalleryFilters(debounce(onFilterClick, RENDER_DELAY));
+  renderPictures(pictures);
+},
+() => showMessage('Не удалось загрузить данные', 'ERROR'));

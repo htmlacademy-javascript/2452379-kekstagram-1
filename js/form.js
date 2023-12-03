@@ -13,6 +13,7 @@ const pictureInput = uploadPictureForm.querySelector('#upload-file');
 const pictureHashtags = uploadPictureForm.querySelector('.text__hashtags');
 const pictureDescription = uploadPictureForm.querySelector('.text__description');
 const closeButton = uploadPictureForm.querySelector('#upload-cancel');
+const uploadButton = uploadPictureForm.querySelector('#upload-submit');
 
 const hashtagRegExp = new RegExp(`^#[a-zа-яё0-9]{${MIN_HASHTAG_LENGTH},${MAX_HASHTAG_LENGTH}}$`, 'i');
 
@@ -26,7 +27,8 @@ pristine.validate();
 
 
 const onEscKeydown = onEscKeydownDo(closeUploadForm, (evt) => evt.target.tagName !== 'INPUT' && evt.target.tagName !== 'TEXTAREA');
-function onPictureInput() {
+
+const onPictureInput = () => {
   const file = pictureInput.files[0], fileName = file.name.toLowerCase();
   if (!FILE_TYPES.some((ft) => fileName.endsWith(ft))) {
     showMessage('Неверный тип файла', 'ERROR');
@@ -41,7 +43,8 @@ function onPictureInput() {
   document.addEventListener('keydown', onEscKeydown);
 
   initPictureEditor(fileURL);
-}
+};
+
 function closeUploadForm() {
   uploadPictureForm.querySelector('.img-upload__overlay').classList.add('hidden');
   document.body.classList.remove('modal-open');
@@ -55,41 +58,49 @@ function closeUploadForm() {
 }
 
 const validateHashtags = (value) => {
-  if (!value.length) {
+  const inputData = value.toLowerCase().trim();
+
+  if (!inputData) {
     return true;
   }
 
-  const hashtags = value.trim().split(/\s+/);
+  const hashtags = inputData.split(/\s+/);
 
-  if (hashtags.length > MAX_HASHTAGS_COUNT) {
-    pristine.addError(pictureHashtags, `Не более ${MAX_HASHTAGS_COUNT} хештегов`);
-    return false;
+  if (hashtags.length === 0) {
+    return true;
   }
 
-  for (let i = 0; i < hashtags.length; i++) {
-    if (!hashtags[i]) {
-      continue;
+  const rules = [
+    {
+      check: hashtags.length > MAX_HASHTAGS_COUNT,
+      error: `Не более ${MAX_HASHTAGS_COUNT} хештегов`
+    },
+    {
+      check: hashtags.some((hashtag) => hashtag.lastIndexOf('#') !== 0),
+      error: 'Хештеги начинаются с # и разеляются пробелами'
+    },
+    {
+      check: hashtags.some((hashtag) => !hashtagRegExp.test(hashtag)),
+      error: `Длина хештега ${MIN_HASHTAG_LENGTH}-${MAX_HASHTAG_LENGTH}. Нельзя использовать спецсимволы/пунктуацию/эмодзи`
+    },
+    {
+      check: hashtags.some((item, index, array) => array.includes(item, index + 1)),
+      error: 'Хештеги не могут повторяться'
     }
-    if (hashtags[i].lastIndexOf('#') !== 0) {
-      pristine.addError(pictureHashtags, 'Хештеги начинаются с # и разеляются пробелами');
-      return false;
-    }
-    if (!hashtagRegExp.test(hashtags[i])) {
-      pristine.addError(pictureHashtags, `Длина хештега ${MIN_HASHTAG_LENGTH}-${MAX_HASHTAG_LENGTH}. Нельзя использовать спецсимволы/пунктуацию/эмодзи`);
-      return false;
-    }
-    if (hashtags.some((item, index) => item === hashtags[i] && index !== i)) {
-      pristine.addError(pictureHashtags, 'Хештеги не могут повторяться');
-      return false;
-    }
-  }
+  ];
 
-  return true;
+  return rules.every((rule) => {
+    if (rule.check) {
+      pristine.addError(pictureHashtags, rule.error);
+      return false;
+    }
+    return true;
+  });
 };
 const validateDescription = (value) => value.length < MAX_DESCRIPTION_SIZE;
 const getHashtagsErrorText = () => {
   const errors = pristine.getErrors(pictureHashtags);
-  return errors[errors.length - 1];
+  return pristine.getErrors(pictureHashtags)[errors.length - 1];
 };
 const getDescriptionErrorText = `Не более ${MAX_DESCRIPTION_SIZE} символов`;
 
@@ -106,9 +117,11 @@ uploadPictureForm.addEventListener('submit', (evt) => {
 
   if (isValid) {
     const formData = new FormData(evt.target);
-    sendData(formData)
-      .then(closeUploadForm)
-      .then(() => showMessage('Изображение успешно загружено', 'SUCCESS'))
-      .catch((err) => showMessage(err.message, 'ERROR'));
+    uploadButton.disabled = true;
+    sendData(() => {
+      closeUploadForm();
+      showMessage('Изображение успешно загружено', 'SUCCESS');
+      uploadButton.disabled = false;
+    }, () => showMessage('Ошибка загрузки файла', 'ERROR'), formData);
   }
 });

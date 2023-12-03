@@ -2,6 +2,7 @@ import { openBigPicture } from './gallery.js';
 
 const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
 const picturesContainer = document.querySelector('.pictures');
+const renderedPictures = document.getElementsByClassName('picture');
 
 const renderPicture = (picture) => {
   const newPicture = pictureTemplate.cloneNode(true);
@@ -19,12 +20,6 @@ const renderPicture = (picture) => {
   return newPicture;
 };
 
-const clearPictures = () => {
-  picturesContainer
-    .querySelectorAll('.picture')
-    .forEach((picture) => picture.remove());
-};
-
 const renderPictures = (pictures) => {
   const fragment = document.createDocumentFragment();
 
@@ -32,7 +27,7 @@ const renderPictures = (pictures) => {
     fragment.append(renderPicture(picture));
   });
 
-  clearPictures();
+  [...renderedPictures].forEach((picture) => picture.remove());
   picturesContainer.append(fragment);
 };
 

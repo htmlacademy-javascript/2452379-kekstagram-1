@@ -22,9 +22,8 @@ function closeMessage() {
 const showMessage = (message, type) => {
   shownMessage = MessageTemplates[type].cloneNode(true);
   shownMessage.querySelector('h2').textContent = message;
-  shownMessage
-    .querySelector('button')
-    .addEventListener('click', closeMessage);
+  shownMessage.querySelector('button').addEventListener('click', closeMessage);
+
   document.body.insertAdjacentElement('beforeend', shownMessage);
   document.addEventListener('keydown', onEscKeydown);
   document.addEventListener('click', onOverElementBoundsClick);
